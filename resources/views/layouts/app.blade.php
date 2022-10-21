@@ -55,6 +55,7 @@
                                 </a>
                                 <a href="{{route('vouchers.index')}}">Boletas</a>
                                 <a href="{{route('invoices.index')}}">Facturas</a>
+                                <a href="{{route('dashboard.index')}}">Dashboard</a>
                                 <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
                                     <a class="dropdown-item" href="{{ route('logout') }}"
                                        onclick="event.preventDefault();
