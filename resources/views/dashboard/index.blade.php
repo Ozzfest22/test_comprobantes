@@ -16,6 +16,9 @@
                         <div class="col">
                             <canvas id="pie-products"></canvas>
                         </div>
+                        <div class="col">
+                            <canvas id="chart-clients"></canvas>
+                        </div>
                     </div>
 
                 </div>
@@ -27,8 +30,8 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
 <script>
     $(document).ready(function() {
-        const cData = JSON.parse(`<?php echo $dataBar; ?>`)
-
+        
+        var cData = <?php echo json_encode($dataBar) ?>;
         const ctx = document.getElementById('chart-ventas').getContext('2d');
 
         const myChart = new Chart(ctx, {
@@ -53,11 +56,11 @@
             },
             options: {
                 scales: {
-                    yAxes: [{
-                        ticks: {
-                            beginAtZero: true
-                        }
-                    }]
+                    y: {
+                        
+                        beginAtZero: true
+                        
+                    }
                 }
             }
         })
@@ -65,8 +68,8 @@
 </script>
 <script>
     $(document).ready(function() {
-        const cData = JSON.parse(`<?php echo $dataPie; ?>`)
-
+        var cData = <?php echo json_encode($dataPie) ?>;
+        
         const ctx = document.getElementById('pie-products').getContext('2d');
 
         const myChart = new Chart(ctx, {
@@ -88,6 +91,44 @@
                     borderWidth: 1
                 }]
 
+            }
+        })
+    });
+</script>
+<script>
+    $(document).ready(function() {
+        var cData = <?php echo json_encode($dataBar2) ?>;
+
+        const ctx = document.getElementById('chart-clients').getContext('2d');
+
+        const myChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: cData.label,
+                datasets: [{
+                    label: 'Clientes con mas ventas',
+                    data: cData.data,
+                    backgroundColor: [
+                        '#e1bee7',
+                        '#ce93d8',
+                        '#ba68c8',
+                        '#ab47bc',
+                        '#9c27b0',
+                        '#8e24aa',
+                        '#c5cae9',
+                    ],
+                    borderWidth: 1
+                }]
+
+            },
+            options: {
+                scales: {
+                    y: {
+                        
+                        beginAtZero: true
+                        
+                    }
+                }
             }
         })
     });

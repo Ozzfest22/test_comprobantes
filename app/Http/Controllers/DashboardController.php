@@ -20,7 +20,25 @@ class DashboardController extends Controller
 
         $dataPie = $this->pieProducts();
 
-        return view("dashboard.index", $dataBar, $dataPie);
+        $dataBar2 = $this->salesClient();
+
+        return view("dashboard.index", compact('dataBar', 'dataPie', 'dataBar2'));
+    }
+
+    public function salesClient()
+    {
+        $clientsSales = DB::select("CALL sp_salesclients");
+
+        $dataBar2 = [];
+
+        foreach ($clientsSales as $sale) {
+            $dataBar2['label'][] = $sale->name;
+            $dataBar2['data'][] = $sale->ventas;
+        }
+
+        $dataBar2['dataBar2'] = json_encode($dataBar2);
+
+        return $dataBar2;
     }
 
     public function pieProducts()
