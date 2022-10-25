@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('adminlte::page')
 
 @section('content')
 <div class="container">
@@ -26,11 +26,17 @@
         </div>
     </div>
 </div>
-<script src="https://code.jquery.com/jquery-3.6.1.min.js" integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ=" crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
+
+
+@stop
+@section('css')
+
+@stop
+
+@section('js')
 <script>
     $(document).ready(function() {
-        
+
         var cData = <?php echo json_encode($dataBar) ?>;
         const ctx = document.getElementById('chart-ventas').getContext('2d');
 
@@ -57,9 +63,9 @@
             options: {
                 scales: {
                     y: {
-                        
+
                         beginAtZero: true
-                        
+
                     }
                 }
             }
@@ -69,7 +75,7 @@
 <script>
     $(document).ready(function() {
         var cData = <?php echo json_encode($dataPie) ?>;
-        
+
         const ctx = document.getElementById('pie-products').getContext('2d');
 
         const myChart = new Chart(ctx, {
@@ -124,13 +130,13 @@
             options: {
                 scales: {
                     y: {
-                        
+
                         beginAtZero: true
-                        
+
                     }
                 }
             }
         })
     });
 </script>
-@endsection
+@stop

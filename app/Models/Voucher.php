@@ -36,4 +36,10 @@ class Voucher extends Model
     public function client(){
         return $this->belongsTo(Client::class, 'id_client');
     }
+
+    public function products(){
+        return $this->belongsToMany(Product::class, 'voucher_detail', 'id_voucher', 'id_prod')
+            ->withPivot('quantity','price')
+            ->withTimestamps();
+    }
 }

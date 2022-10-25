@@ -92,31 +92,29 @@ class InvoiceController extends Controller
         $client_find = Client::where('id', $name)->first();
 
         //Factura
-        $voucher = new Voucher();
-        $voucher->id_voucher_type = $tipo->id;
-        $voucher->voucher_serie = $serie;
-        $voucher->voucher_number = $numberFinal;
-        $voucher->voucher_date = $actualDate;
-        $voucher->id_voucher_status = $status->id;
-        $voucher->id_currency = $currency;
-        $voucher->id_companie = $company->id;
-        $voucher->id_user = $user;
-        $voucher->id_client = $client_find->id;
+        $invoice = new Voucher();
+        $invoice->id_voucher_type = $tipo->id;
+        $invoice->voucher_serie = $serie;
+        $invoice->voucher_number = $numberFinal;
+        $invoice->voucher_date = $actualDate;
+        $invoice->id_voucher_status = $status->id;
+        $invoice->id_currency = $currency;
+        $invoice->id_companie = $company->id;
+        $invoice->id_user = $user;
+        $invoice->id_client = $client_find->id;
 
-        //contador de registros y detalle
+        
+        //forma numero 2
+        $products = $request->input('product',[]);
+        $quantities = $request->input('cantidad',[]);
+        $prices = $request->input('precio',[]);
         $cantidad = count($request->product);
-        if ($cantidad != 0) {
-            $voucher->save();
-            for ($i = 0; $i < $cantidad; $i++) {
-                $product_name = Product::where('name', $request->product[$i])->first();
+        if($cantidad != 0){
+            $invoice->save();
+            for($product = 0; $product < count($products); $product++){
+                $product_name = Product::where('name', $request->product[$product])->first()->id;
 
-                $voucher_detail = new VoucherDetail();
-
-                $voucher_detail->id_voucher = $voucher->id;
-                $voucher_detail->id_prod = $product_name->id;
-                $voucher_detail->quantity = $request->cantidad[$i];
-                $voucher_detail->price = $request->precio[$i];
-                $voucher_detail->save();
+                $invoice->products()->attach($product_name, ['quantity' => $quantities[$product], 'price' => $prices[$product]]);
             }
         }
 
@@ -132,10 +130,11 @@ class InvoiceController extends Controller
     public function show($id)
     {
         $invoice = Voucher::find($id);
-        $invoice_details = VoucherDetail::where('id_voucher', $id)->get();
+        //$invoice_details = VoucherDetail::where('id_voucher', $id)->get();
+        $invoice_details = $invoice->products()->where('id_voucher', $id)->get();
         $subtotal = 0;
-
-        return view('invoices.show', compact('invoice', 'invoice_details', 'subtotal'));
+        
+        return view('invoices.show', compact('invoice', 'invoice_details' ,'subtotal'));
     }
 
     /**

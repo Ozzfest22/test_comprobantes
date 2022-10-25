@@ -13,7 +13,7 @@ class VoucherDetail extends Model
 
     protected $guarded = [];
 
-    public function product(){
+    /* public function product(){
         return $this->belongsTo(Product::class, 'id_prod');
-    }
+    } */
 }
