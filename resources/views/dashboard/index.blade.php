@@ -36,11 +36,12 @@
 @section('js')
 <script>
     $(document).ready(function() {
-
+        
         var cData = <?php echo json_encode($dataBar) ?>;
         const ctx = document.getElementById('chart-ventas').getContext('2d');
 
         const myChart = new Chart(ctx, {
+            plugins: [ChartDataLabels],
             type: 'bar',
             data: {
                 labels: cData.label,
@@ -67,7 +68,8 @@
                         beginAtZero: true
 
                     }
-                }
+                },
+                
             }
         })
     });
@@ -75,6 +77,10 @@
 <script>
     $(document).ready(function() {
         var cData = <?php echo json_encode($dataPie) ?>;
+
+        const dataNumber = cData.data.map(str => {
+            return Number(str);
+        });
 
         const ctx = document.getElementById('pie-products').getContext('2d');
 
@@ -84,7 +90,7 @@
                 labels: cData.label,
                 datasets: [{
                     label: 'Producto mas vendido',
-                    data: cData.data,
+                    data: dataNumber,
                     backgroundColor: [
                         '#e1bee7',
                         '#ce93d8',
@@ -97,6 +103,17 @@
                     borderWidth: 1
                 }]
 
+            },
+            options: {
+                tooltips: {
+                    enabled: true
+                },
+                plugins: {
+                    labels: {
+                        render: 'percentage',
+                        precision: 2,
+                    }
+                }
             }
         })
     });
@@ -108,6 +125,7 @@
         const ctx = document.getElementById('chart-clients').getContext('2d');
 
         const myChart = new Chart(ctx, {
+            plugins: [ChartDataLabels],
             type: 'bar',
             data: {
                 labels: cData.label,
