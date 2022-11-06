@@ -325,6 +325,11 @@ return [
             'icon' => 'fas fa-fw fa-user',
         ],
         [
+            'text' => 'Productos',
+            'url'  => '/products',
+            'icon' => 'fas fa-fw fa-store',
+        ],
+        [
             'text' => 'Boletas',
             'url'  => '/vouchers',
             'icon' => 'fas fa-fw fa-lock',

@@ -15,6 +15,7 @@ use App\Models\VoucherType;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\VoucherRequest;
+use Yajra\DataTables\DataTables;
 
 class VoucherController extends Controller
 {
@@ -23,11 +24,20 @@ class VoucherController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $vouchers = Voucher::where('id_voucher_type','1')->get()->all();
+        //$vouchers = Voucher::where('id_voucher_type','1')->get()->all();
 
-        return view('vouchers.index', compact('vouchers'));
+        if($request->ajax()){
+            $vouchers = Voucher::where('id_voucher_type','1')->with('client')->with('voucher_status')->get()->all();
+
+            return DataTables::of($vouchers)
+                ->addColumn('acciones', 'vouchers.actions')    
+                ->rawColumns(['acciones'])   
+                ->make(true);
+        }
+
+        return view('vouchers.index');
     }
 
     /**

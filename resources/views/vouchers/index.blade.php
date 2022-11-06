@@ -10,7 +10,7 @@
                 <div class="card-body">
                     <a class="btn btn-success" href="{{route('vouchers.create')}}">Crear</a>
 
-                    <table class="table table-light">
+                    <table class="table table-light" id="tableVouchers">
                         <thead class="thead-light">
                             <tr>
                                 <th hidden>Id</th>
@@ -22,18 +22,6 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach($vouchers as $voucher)
-                            <tr>
-                                <td hidden>{{$voucher->id}}</td>
-                                <td>{{$voucher->voucher_serie}}</td>
-                                <td>{{$voucher->client->name}}</td>
-                                <td>{{$voucher->voucher_status->name}}</td>
-                                <td>{{$voucher->voucher_date}}</td>
-                                <td>
-                                    <a href="{{route('vouchers.show',$voucher->id)}}" class="btn btn-success">Ver</a>
-                                </td>
-                            </tr>
-                            @endforeach
                         </tbody>
                     </table>
                 </div>
@@ -43,9 +31,44 @@
 </div>
 @stop
 @section('css')
-    <link rel="stylesheet" href="/css/admin_custom.css">
+<link rel="stylesheet" href="/css/admin_custom.css">
 @stop
 
 @section('js')
-    <script> console.log('Hi!'); </script>
+<script>
+    $(document).ready(function() {
+        $('#tableVouchers').DataTable({
+            processing: true,
+            serverSide: true,
+            ajax: "{{route('vouchers.index')}}",
+            dataType: 'json',
+            type: "POST",
+            columns: [{
+                    data: 'voucher_serie',
+                    name: 'voucher_serie'
+                },
+                {
+                    data: 'client.name',
+                    name: 'client.name'
+                },
+                {
+                    data: 'voucher_status.name',
+                    name: 'voucher_status.name'
+                },
+                {
+                    data: 'voucher_date',
+                    name: 'vocher_date'
+                },
+                {
+                    data: 'acciones',
+                    name: 'acciones'
+                }
+            ],
+            language: {
+                url: "https://cdn.datatables.net/plug-ins/1.11.5/i18n/es-ES.json"
+            },
+            responsive: true
+        })
+    });
+</script>
 @stop
