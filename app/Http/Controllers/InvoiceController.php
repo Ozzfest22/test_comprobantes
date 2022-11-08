@@ -13,6 +13,8 @@ use App\Models\VoucherStatus;
 use App\Models\Company;
 use Illuminate\Support\Facades\Auth;
 use App\Models\VoucherDetail;
+use Illuminate\Support\Facades\DB;
+use Yajra\DataTables\DataTables;
 
 class InvoiceController extends Controller
 {
@@ -21,11 +23,28 @@ class InvoiceController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $invoices = Voucher::where('id_voucher_type', '2')->get()->all();
+        //$invoices = Voucher::where('id_voucher_type', '2')->get();
 
-        return view('invoices.index', compact('invoices'));
+        if ($request->ajax()) {
+
+            $invoices = DB::table('voucher')
+                ->join('voucher_detail', 'voucher.id', '=', 'voucher_detail.id_voucher')
+                ->join('clients', 'voucher.id_client', '=', 'clients.id')
+                ->join('voucher_status', 'voucher.id_voucher_status', '=', 'voucher_status.id')
+                ->select('voucher.id', 'voucher.voucher_serie', 'clients.name as client_name', 'voucher.voucher_date', 'voucher_status.name as status_name', DB::raw('SUM(voucher_detail.price * voucher_detail.quantity) as monto'))
+                ->where('voucher.id_voucher_type', '=', '2')
+                ->groupBy('voucher.id', 'voucher.voucher_serie', 'client_name', 'voucher_date', 'status_name')
+                ->get();
+
+            return DataTables::of($invoices)
+                ->addColumn('acciones', 'invoices.actions')
+                ->rawColumns(['acciones'])
+                ->make(true);
+        }
+
+        return view('invoices.index');
     }
 
     /**
@@ -103,15 +122,15 @@ class InvoiceController extends Controller
         $invoice->id_user = $user;
         $invoice->id_client = $client_find->id;
 
-        
+
         //forma numero 2
-        $products = $request->input('product',[]);
-        $quantities = $request->input('cantidad',[]);
-        $prices = $request->input('precio',[]);
+        $products = $request->input('product', []);
+        $quantities = $request->input('cantidad', []);
+        $prices = $request->input('precio', []);
         $cantidad = count($request->product);
-        if($cantidad != 0){
+        if ($cantidad != 0) {
             $invoice->save();
-            for($product = 0; $product < count($products); $product++){
+            for ($product = 0; $product < count($products); $product++) {
                 $product_name = Product::where('name', $request->product[$product])->first()->id;
 
                 $invoice->products()->attach($product_name, ['quantity' => $quantities[$product], 'price' => $prices[$product]]);
@@ -133,8 +152,8 @@ class InvoiceController extends Controller
         //$invoice_details = VoucherDetail::where('id_voucher', $id)->get();
         $invoice_details = $invoice->products()->where('id_voucher', $id)->get();
         $subtotal = 0;
-        
-        return view('invoices.show', compact('invoice', 'invoice_details' ,'subtotal'));
+
+        return view('invoices.show', compact('invoice', 'invoice_details', 'subtotal'));
     }
 
     /**

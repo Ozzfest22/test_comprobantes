@@ -29,14 +29,16 @@ class VoucherController extends Controller
         //$vouchers = Voucher::where('id_voucher_type','1')->get()->all();
 
         if($request->ajax()){
-            $vouchers = Voucher::where('id_voucher_type','1')->with('client')->with('voucher_status')->get()->all();
-
+            $vouchers = Voucher::where('id_voucher_type','1')->with('client')->with('voucher_status')->with('products')->get();
+            
             return DataTables::of($vouchers)
                 ->addColumn('acciones', 'vouchers.actions')    
                 ->rawColumns(['acciones'])   
                 ->make(true);
-        }
 
+                
+        }
+        
         return view('vouchers.index');
     }
 
