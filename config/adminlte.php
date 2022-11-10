@@ -335,6 +335,11 @@ return [
             'icon' => 'fas fa-fw fa-lock',
         ],
         [
+            'text' => 'Reportes',
+            'url'  => '/reports',
+            'icon' => 'fas fa-fw fa-lock',
+        ],
+        [
             'text'    => 'multilevel',
             'icon'    => 'fas fa-fw fa-share',
             'submenu' => [
@@ -492,6 +497,31 @@ return [
                     'type' => 'css',
                     'asset' => false,
                     'location' => '//cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/css/select2.css',
+                ],
+            ],
+        ],
+        'DatePicker' => [
+            'active' => true,
+            'files' => [
+                [
+                    'type' => 'js',
+                    'asset' => false,
+                    'location' => '//code.jquery.com/ui/1.12.1/jquery-ui.js',
+                ],
+                [
+                    'type' => 'js',
+                    'asset' => false,
+                    'location' => '//cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js',
+                ],
+                [
+                    'type' => 'js',
+                    'asset' => false,
+                    'location' => '//ajax.googleapis.com/ajax/libs/jqueryui/1.11.1/i18n/jquery-ui-i18n.min.js',
+                ],
+                [
+                    'type' => 'css',
+                    'asset' => false,
+                    'location' => '//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css',
                 ],
             ],
         ],
