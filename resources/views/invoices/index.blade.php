@@ -12,6 +12,7 @@
                 <div class="card-body">
                     <a class="btn btn-success mb-3" href="{{route('invoices.create')}}">Crear</a>
 
+                  
                     <table class="table table-light mt-2 nowrap" style="width: 100%;" id="invoicesTable">
                         <thead class="thead-light">
                             <tr>
@@ -69,7 +70,7 @@
                 {
                     data: 'monto',
                     name: 'monto'
-                }, 
+                },
                 {
                     data: 'acciones',
                     name: 'acciones'

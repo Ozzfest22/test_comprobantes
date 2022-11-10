@@ -35,6 +35,7 @@ class InvoiceController extends Controller
                 ->join('voucher_status', 'voucher.id_voucher_status', '=', 'voucher_status.id')
                 ->select('voucher.id', 'voucher.voucher_serie', 'clients.name as client_name', 'voucher.voucher_date', 'voucher_status.name as status_name', DB::raw('SUM(voucher_detail.price * voucher_detail.quantity) as monto'))
                 ->where('voucher.id_voucher_type', '=', '2')
+//->whereDay('voucher.voucher_date','=', date('d'))
                 ->groupBy('voucher.id', 'voucher.voucher_serie', 'client_name', 'voucher_date', 'status_name')
                 ->get();
 
