@@ -340,6 +340,11 @@ return [
             'icon' => 'fas fa-fw fa-lock',
         ],
         [
+            'text' => 'Reportes SS',
+            'url'  => '/reportss',
+            'icon' => 'fas fa-fw fa-lock',
+        ],
+        [
             'text'    => 'multilevel',
             'icon'    => 'fas fa-fw fa-share',
             'submenu' => [
