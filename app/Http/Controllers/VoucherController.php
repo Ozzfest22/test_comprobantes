@@ -15,7 +15,10 @@ use App\Models\VoucherType;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\VoucherRequest;
+use App\Mail\VoucherMail;
+use Illuminate\Support\Facades\Mail;
 use Yajra\DataTables\DataTables;
+use PDF;
 
 class VoucherController extends Controller
 {
@@ -182,5 +185,19 @@ class VoucherController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function voucher_send(Request $request)
+    {
+        $voucher = Voucher::find($request->id);
+        $voucher_details = $voucher->products()->where('id_voucher', $request->id)->get();
+        $data['voucher'] = $voucher;
+        $data['voucher_details'] = $voucher_details;
+        $data['subtotal'] = 0;
+        $pdf = PDF::loadView('vouchers.show_pdf', $data);
+
+        Mail::to($voucher->client->email)->send(new VoucherMail($pdf));
+
+        return redirect()->route('vouchers.index');
     }
 }

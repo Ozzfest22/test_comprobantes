@@ -36,6 +36,7 @@ Route::resource('reports', ReportController::class)->middleware('auth');
 Route::resource('reportss', ReportSSController::class)->middleware('auth');
 Route::resource('clients', ClientController::class)->middleware('auth');
 
+Route::post('voucher_send',[VoucherController::class, 'voucher_send'])->name('voucher_send');
 
 Route::post('precio_ajax_b', [VoucherController::class, 'precio_ajax_b'])->name('precio_ajax_b');
 Route::post('precio_ajax_f', [InvoiceController::class, 'precio_ajax_f'])->name('precio_ajax_f');

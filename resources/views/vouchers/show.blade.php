@@ -141,10 +141,11 @@
                                         </button>
                                     </form>
 
-                                    <form action="#" enctype="multipart/form-data" method="post" id="form_store">
+                                    <form action="{{route('voucher_send')}}" enctype="multipart/form-data" method="post" id="form_store">
                                         @csrf
-                                        <button type="submit" class="btn btn-success float-right">
-                                            Enviar a correo
+                                        <input type="text" value="{{$voucher->id}}" name="id" style="display: none">
+                                        <button type="submit" class="btn btn-primary float-right">
+                                            Enviar por Correo
                                         </button></a>
                                     </form>
 
