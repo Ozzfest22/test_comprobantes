@@ -49,6 +49,7 @@
                                 <th>Fecha</th>
                                 <th>Estado</th>
                                 <th>Monto</th>
+                                <th>Impuesto</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -122,6 +123,10 @@
                         data: 'monto',
                         name: 'monto'
                     },
+                    {
+                        data: 'igv',
+                        name: 'igv'
+                    }
                 ],
                 language: {
                     url: "https://cdn.datatables.net/plug-ins/1.11.5/i18n/es-ES.json"
@@ -141,17 +146,6 @@
                             }
 
                         }
-                    },
-                    {
-                        targets: 6,
-                        render: function(data, type, row, meta) {
-                            if (row.type_name == 'Factura') {
-                                monto_igv = parseFloat(row.monto) + parseFloat(row.monto * 0.18)
-                                return row.monto = monto_igv
-                            } else if (row.type_name == 'Boleta') {
-                                return row.monto
-                            }
-                        }
                     }
                 ],
                 dom: 'Bfrtip',
@@ -161,7 +155,7 @@
                         filename: 'Reporte Ventas',
                         title: '',
                         exportOptions: {
-                            columns: [1, 2, 3, 4, 5, 6]
+                            columns: [1, 2, 3, 4, 5, 6, 7]
                         },
                         className: 'btn-exportar-excel',
                     },
@@ -171,7 +165,7 @@
                         filename: 'Reporte Ventas',
                         title: 'Reporte de Ventas ' + $("#start_date").val() + ' - ' + $("#end_date").val() + ' creador por ' + user,
                         exportOptions: {
-                            columns: [1, 2, 3, 4, 5, 6]
+                            columns: [1, 2, 3, 4, 5, 6, 7]
                         },
                         className: 'btn-exportar-pdf',
                         customize: function(doc) {
@@ -186,7 +180,7 @@
                         extend: 'print',
                         title: 'Reporte de Ventas',
                         exportOptions: {
-                            columns: [1, 2, 3, 4, 5, 6]
+                            columns: [1, 2, 3, 4, 5, 6, 7]
                         },
                         className: 'btn-exportar-print',
                     },

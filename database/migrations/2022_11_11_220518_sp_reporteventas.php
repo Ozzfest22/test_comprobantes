@@ -18,14 +18,18 @@ return new class extends Migration
                 CREATE PROCEDURE `sp_reporteventas`(IN start_date DATE, IN end_date DATE)
                 BEGIN
                     if (start_date = '1000-01-01' and end_date = '1000-01-01') or (start_date > end_date) THEN
-                        select v.id, v.voucher_serie, vt.name as type_name, c.name as client_name, v.voucher_date, vs.name as status_name, SUM(vd.price * vd.quantity) as monto from voucher v 
+                        select v.id, v.voucher_serie, vt.name as type_name, c.name as client_name, v.voucher_date, vs.name as status_name, SUM(vd.price * vd.quantity) as monto,
+                        if(v.id_voucher_type = '2', TRUNCATE(SUM(vd.price * vd.quantity) * 0.18, 2), 0) as igv
+                        from voucher v 
                         inner join voucher_detail vd on v.id = vd.id_voucher
                         inner join clients c on v.id_client = c.id
                         inner join voucher_status vs on v.id_voucher_status = vs.id
                         inner join voucher_type vt on v.id_voucher_type = vt.id
                         group by v.id, v.voucher_serie, type_name, client_name, v.voucher_date, status_name;   
                     else
-                        select v.id, v.voucher_serie, vt.name as type_name, c.name as client_name, v.voucher_date, vs.name as status_name, SUM(vd.price * vd.quantity) as monto from voucher v 
+                        select v.id, v.voucher_serie, vt.name as type_name, c.name as client_name, v.voucher_date, vs.name as status_name, SUM(vd.price * vd.quantity) as monto,
+                        if(v.id_voucher_type = '2', TRUNCATE(SUM(vd.price * vd.quantity) * 0.18, 2), 0) as igv
+                        from voucher v 
                         inner join voucher_detail vd on v.id = vd.id_voucher
                         inner join clients c on v.id_client = c.id
                         inner join voucher_status vs on v.id_voucher_status = vs.id
