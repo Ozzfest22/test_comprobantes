@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\DataTables;
+use Illuminate\Support\Facades\Auth;
 
 class ReportSSController extends Controller
 {
@@ -31,7 +32,9 @@ class ReportSSController extends Controller
             return datatables()->of($general_vouchers)->make(true);
         } 
 
-        return view('reportss.index');
+        $creador = Auth::user()->name;
+
+        return view('reportss.index', compact('creador'));
     }
 
 
