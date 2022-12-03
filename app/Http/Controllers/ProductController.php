@@ -24,8 +24,9 @@ class ProductController extends Controller
                 ->make(true);
         }
 
+        $eliminados = Product::onlyTrashed()->get();
 
-        return view('products.index');
+        return view('products.index', compact('eliminados'));
     }
 
     /**
@@ -98,6 +99,13 @@ class ProductController extends Controller
     public function destroy($id)
     {
         Product::find($id)->delete();
+
+        return redirect()->route('products.index');
+    }
+
+    public function restoreProducts($id)
+    {
+        Product::onlyTrashed()->where('id', $id)->restore();
 
         return redirect()->route('products.index');
     }

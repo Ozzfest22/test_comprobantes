@@ -40,3 +40,5 @@ Route::post('voucher_send',[VoucherController::class, 'voucher_send'])->name('vo
 
 Route::post('precio_ajax_b', [VoucherController::class, 'precio_ajax_b'])->name('precio_ajax_b');
 Route::post('precio_ajax_f', [InvoiceController::class, 'precio_ajax_f'])->name('precio_ajax_f');
+
+Route::post('restoreProducts/{id}', [ProductController::class, 'restoreProducts'])->name('restoreProducts');

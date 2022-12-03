@@ -40,6 +40,7 @@ class Voucher extends Model
     public function products(){
         return $this->belongsToMany(Product::class, 'voucher_detail', 'id_voucher', 'id_prod')
             ->withPivot('quantity','price')
-            ->withTimestamps();
+            ->withTimestamps()
+            ->withTrashed();
     }
 }
